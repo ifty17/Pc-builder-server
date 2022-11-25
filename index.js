@@ -30,6 +30,23 @@ async function run(){
             const result = await categoriesCollection.find(query).toArray();
             res.send(result);
         });
+
+        app.get('/products/:category_id', async(req, res)=>{
+            const category = req.params.category_id;
+            console.log(category);
+            const query = { category_id: category};
+            const products = await productsCollection.find(query).toArray();
+            res.send(products);
+
+            // products.forEach(product =>{
+            //    const filter = product.filter(prd => prd.category_id === category)
+            //    res.send(filter);
+            // });
+
+
+            
+            
+        })
     }
     finally{
 
