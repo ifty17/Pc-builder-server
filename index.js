@@ -25,6 +25,7 @@ async function run(){
         const categoriesCollection = client.db('pcbuilder').collection('categories');
         const productsCollection = client.db('pcbuilder').collection('products');
         const usersCollection = client.db('pcbuilder').collection('users');
+        const ordersCollection = client.db('pcbuilder').collection('orders');
 
         app.get('/categories', async(req, res) =>{
             const query = {};
@@ -51,6 +52,12 @@ async function run(){
             const result = await usersCollection.insertOne(user);
             res.send(result);
         });
+
+        app.post("/orders", async(req, res) =>{
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order);
+            res.send(result);
+        })
     }
     finally{
 
