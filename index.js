@@ -24,6 +24,7 @@ async function run(){
     try{
         const categoriesCollection = client.db('pcbuilder').collection('categories');
         const productsCollection = client.db('pcbuilder').collection('products');
+        const usersCollection = client.db('pcbuilder').collection('users');
 
         app.get('/categories', async(req, res) =>{
             const query = {};
@@ -35,7 +36,7 @@ async function run(){
             const query = {};
             const result = await productsCollection.find(query).toArray();
             res.send(result);
-        })
+        });
 
         app.get('/products/:category_id', async(req, res)=>{
             const category = req.params.category_id;
@@ -43,7 +44,13 @@ async function run(){
             const query = { category_id: category};
             const products = await productsCollection.find(query).toArray();
             res.send(products);
-        })
+        });
+
+        app.post('/users', async(req, res) =>{
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
+        });
     }
     finally{
 
