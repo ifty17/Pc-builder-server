@@ -27,18 +27,21 @@ async function run(){
         const usersCollection = client.db('pcbuilder').collection('users');
         const ordersCollection = client.db('pcbuilder').collection('orders');
 
+        // get categories
         app.get('/categories', async(req, res) =>{
             const query = {};
             const result = await categoriesCollection.find(query).toArray();
             res.send(result);
         });
 
+        //get all products
         app.get('/products', async(req, res) =>{
             const query = {};
             const result = await productsCollection.find(query).toArray();
             res.send(result);
         });
 
+        //get products by category
         app.get('/products/:category_id', async(req, res)=>{
             const category = req.params.category_id;
             console.log(category);
@@ -47,17 +50,41 @@ async function run(){
             res.send(products);
         });
 
+        // Save users to database
         app.post('/users', async(req, res) =>{
             const user = req.body;
             const result = await usersCollection.insertOne(user);
             res.send(result);
         });
 
+        // check available user is database
+        app.get('/checkUsers', async(req, res) =>{
+            const email = req.query.email;
+            const query = {
+                email: email
+            }
+            const result = await usersCollection.find(query).toArray();
+            res.send(result);
+        })
+
+        //save orders
         app.post("/orders", async(req, res) =>{
             const order = req.body;
             const result = await ordersCollection.insertOne(order);
             res.send(result);
+        });
+
+        // My orders
+        app.get('/orders', async(req, res) =>{
+            const email = req.query.email;
+            const query = {
+                email: email
+            }
+            const result = await ordersCollection.find(query).toArray();
+            res.send(result);
         })
+
+
     }
     finally{
 
