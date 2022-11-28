@@ -106,6 +106,14 @@ async function run(){
             res.send(result);
         })
 
+        //check admin
+         app.get("/users/admin/:email", async (req, res) => {
+           const email = req.params.email;
+           const query = { email };
+           const user = await usersCollection.findOne(query);
+           res.send({ isAdmin: user?.role === "admin" });
+         });
+
         //save orders
         app.post("/orders", async(req, res) =>{
             const order = req.body;
