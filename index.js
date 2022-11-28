@@ -176,6 +176,34 @@ async function run(){
           res.send(result);
         });
 
+        //verify seller
+        app.put( "/verify/:id",async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+              $set: {
+                verify: "verified",
+              },
+            };
+            const result = await usersCollection.updateOne(
+              filter,
+              updateDoc,
+              options
+            );
+            res.send(result);
+          }
+        );
+
+        // get verify seller
+        app.get("/verify/:email", async (req, res) => {
+          const email = req.params.email;
+          const query = { email };
+          const user = await usersCollection.findOne(query);
+          res.send({ isSellerVerified: user?.verify === "verified" });
+        });
+
 
     }
     finally{
