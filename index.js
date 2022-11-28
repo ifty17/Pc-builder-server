@@ -57,12 +57,29 @@ async function run(){
             res.send(products);
         });
 
+        //get my products
+        app.get('/productsbyemail', async(req, res) =>{
+            const email = req.query.email;
+            console.log(email);
+            const query = {
+              email: email,
+            };
+            const result = await productsCollection.find(query).toArray();
+            res.send(result);
+        })
+
         // Save users to database
         app.post('/users', async(req, res) =>{
             const user = req.body;
             const result = await usersCollection.insertOne(user);
             res.send(result);
         });
+
+        app.get('/allsellers', async(req, res) =>{
+            const query = {role: 'seller'}
+            const user = await usersCollection.find(query).toArray();
+            res.send(user); 
+        })
 
         // check available user is database
         app.get('/checkUsers', async(req, res) =>{
