@@ -29,9 +29,17 @@ async function run() {
     const advertiseCollection = client.db("pcbuilder").collection("advertise");
     const reportedCollection = client.db("pcbuilder").collection("reported");
 
+    // Post reported item
     app.post("/reporteditems", async (req, res) => {
       const reported = req.body;
       const result = await reportedCollection.insertOne(reported);
+      res.send(result);
+    });
+
+    //get reported item
+    app.get("/reportedItems", async (req, res) => {
+      const query = {};
+      const result = await reportedCollection.find(query).toArray();
       res.send(result);
     });
 
