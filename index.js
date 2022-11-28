@@ -68,6 +68,15 @@ async function run(){
             res.send(result);
         })
 
+        // check available user
+        app.get('/users', async(req, res) =>{
+            const checkEmail = req.query.email;
+            // console.log(email);
+            const query = {email: checkEmail};
+            const result = await usersCollection.find(query).toArray();
+            res.send(result);        
+        })
+
         // Save users to database
         app.post('/users', async(req, res) =>{
             const user = req.body;
@@ -79,6 +88,12 @@ async function run(){
             const query = {role: 'seller'}
             const user = await usersCollection.find(query).toArray();
             res.send(user); 
+        })
+
+        app.get('/allbuyers', async(req, res) =>{
+            const query = {role: 'buyer'}
+            const user = await usersCollection.find(query).toArray();
+            res.send(user);
         })
 
         // check available user is database
