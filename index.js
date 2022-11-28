@@ -26,6 +26,14 @@ async function run(){
         const productsCollection = client.db('pcbuilder').collection('products');
         const usersCollection = client.db('pcbuilder').collection('users');
         const ordersCollection = client.db('pcbuilder').collection('orders');
+        const advertiseCollection = client.db('pcbuilder').collection('advertise');
+
+        // post product for advertise
+        app.post('/advertise', async(req, res) =>{
+            const advertise = req.body;
+            const result = await advertiseCollection.insertOne(advertise);
+            res.send(result);
+        })
 
         // get categories
         app.get('/categories', async(req, res) =>{
@@ -51,7 +59,6 @@ async function run(){
         //get products by category
         app.get('/products/:category_id', async(req, res)=>{
             const category = req.params.category_id;
-            console.log(category);
             const query = { category_id: category};
             const products = await productsCollection.find(query).toArray();
             res.send(products);
@@ -60,7 +67,6 @@ async function run(){
         //get my products
         app.get('/productsbyemail', async(req, res) =>{
             const email = req.query.email;
-            console.log(email);
             const query = {
               email: email,
             };
