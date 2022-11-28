@@ -35,6 +35,13 @@ async function run(){
             res.send(result);
         })
 
+        // get advertised product
+        app.get('/advproduct', async(req, res) =>{
+            const query = {};
+            const result = await advertiseCollection.find(query).toArray();
+            res.send(result);
+        })
+
         // get categories
         app.get('/categories', async(req, res) =>{
             const query = {};
